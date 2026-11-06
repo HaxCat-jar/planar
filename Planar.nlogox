@@ -722,21 +722,57 @@ to check_for_portals
   
   ask turtles [
     
+    if gravity-direction = 0 [
+      
+      if [pcolor] of patch (xcor + 6) ycor = blue or [pcolor] of patch (xcor - 6) ycor = blue or [pcolor] of patch xcor (ycor + 8) = blue [
+        set portal-exit-color orange
+        go_through_portal
+      ]
+      
+      if [pcolor] of patch (xcor + 6) ycor = orange or [pcolor] of patch (xcor - 6) ycor = orange or [pcolor] of patch xcor (ycor + 8) = orange [
+        set portal-exit-color blue
+        go_through_portal
+      ]
+    ]
+    
+    
+    if gravity-direction = 1 [
+      
+      if [pcolor] of patch xcor (ycor + 6) = blue or [pcolor] of patch xcor (ycor - 6) = blue or [pcolor] of patch (xcor + 8) ycor = blue [
+        set portal-exit-color orange
+        go_through_portal
+      ]
+      
+      
+      if [pcolor] of patch xcor (ycor + 6) = orange or [pcolor] of patch xcor (ycor - 6) = orange or [pcolor] of patch (xcor + 8) ycor = orange [
+        set portal-exit-color blue
+        go_through_portal
+      ]
+    ]
+    
+    
     if gravity-direction = 2 [
       
       if [pcolor] of patch (xcor + 6) ycor = blue or [pcolor] of patch (xcor - 6) ycor = blue or [pcolor] of patch xcor (ycor - 8) = blue [
         set portal-exit-color orange
-        set portal-reference-x (portal-2-x - xcor)
-        set portal-reference-y (portal-2-y - ycor)
-        
         go_through_portal
       ]
       
       if [pcolor] of patch (xcor + 6) ycor = orange or [pcolor] of patch (xcor - 6) ycor = orange or [pcolor] of patch xcor (ycor - 8) = orange [
         set portal-exit-color blue
-        set portal-reference-x (portal-1-x - xcor)
-        set portal-reference-y (portal-2-y - ycor)
-        
+        go_through_portal
+      ]
+    ]
+    
+    if gravity-direction = 3 [
+      
+      if [pcolor] of patch xcor (ycor + 6) = blue or [pcolor] of patch xcor (ycor - 6) = blue or [pcolor] of patch (xcor - 8) ycor = blue [
+        set portal-exit-color orange
+        go_through_portal
+      ]
+      
+      if [pcolor] of patch xcor (ycor + 6) = orange or [pcolor] of patch xcor (ycor - 6) = orange or [pcolor] of patch (xcor - 8) ycor = orange [
+        set portal-exit-color blue
         go_through_portal
       ]
     ]
@@ -749,7 +785,17 @@ end
 
 to go_through_portal
   
-  
+  ask turtles [
+    
+    if portal-exit-color = blue [
+      
+    ]
+    
+    if portal-exit-color = orange [
+      
+    ]
+    
+  ]
   
 end
 
@@ -774,9 +820,19 @@ to create_portal_1_x
     ]
   ]
   
-  if [pcolor] of patch portal-1-x 
+  
+  
+  if [pcolor] of patch portal-1-x (portal-1-y - 1) = 5 [
+    set portal-1-heading 0
+  ]
+  
+  if [pcolor] of patch portal-1-x (portal-1-y + 2) = 5 [
+    set portal-1-heading 2
+  ]
   
 end
+
+
 
 to create_portal_1_y
   
@@ -787,7 +843,19 @@ to create_portal_1_y
     ]
   ]
   
+  
+  
+  if [pcolor] of patch (portal-1-x + 2) portal-1-y = 5 [
+    set portal-1-heading 1
+  ]
+  
+  if [pcolor] of patch (portal-1-x - 1) portal-1-y = 5 [
+    set portal-1-heading 3
+  ]
+  
 end
+
+
 
 to create_portal_2_x
   
@@ -796,6 +864,16 @@ to create_portal_2_x
     if pxcor >= portal-2-x and pxcor <= (portal-2-x + 20) and pycor >= portal-2-y and pycor <= (portal-2-y + 1) [
       set pcolor orange
     ]
+  ]
+  
+  
+  
+  if [pcolor] of patch portal-1-x (portal-1-y - 1) = 5 [
+    set portal-2-heading 0
+  ]
+  
+  if [pcolor] of patch portal-1-x (portal-1-y + 2) = 5 [
+    set portal-2-heading 2
   ]
   
 end
@@ -808,6 +886,16 @@ to create_portal_2_y
     if pxcor >= portal-2-x and pxcor <= (portal-2-x + 1) and pycor >= portal-2-y and pycor <= (portal-2-y + 20) [
       set pcolor orange
     ]
+  ]
+  
+  
+  
+  if [pcolor] of patch (portal-1-x + 2) portal-1-y = 5 [
+    set portal-2-heading 1
+  ]
+  
+  if [pcolor] of patch (portal-1-x - 1) portal-1-y = 5 [
+    set portal-2-heading 3
   ]
   
 end
@@ -2066,6 +2154,7 @@ end]]></code>
     <monitor x="30" precision="17" y="460" height="60" fontSize="11" width="100">player_icon</monitor>
     <monitor x="30" precision="17" y="530" height="60" fontSize="11" width="100">player_color</monitor>
     <button x="1130" actionKey="E" y="245" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="120">switch_gravity</button>
+    <monitor x="805" precision="17" y="555" height="60" fontSize="11" width="100">portal-exit-color</monitor>
   </widgets>
   <info>## WHAT IS PLANAR?
 
